@@ -24,7 +24,7 @@ RUN git clone --branch v1.2.0 --single-branch https://github.com/novnc/noVNC.git
     ln -s /opt/noVNC/vnc.html /opt/noVNC/index.html
 
 RUN mkdir /src
-ADD entrypoint.sh /src
+COPY entrypoint.sh /src
 
 EXPOSE 5901 6901
 ENTRYPOINT ["/src/entrypoint.sh"]
