@@ -16,6 +16,14 @@ jobs:
               username: ${{ secrets.DOCKERHUB_USERNAME }}
               password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+          - name: Build debian-novnc Base
+            run: docker build -t debian-novnc:base Base/.
+  
+          - name: Push debian-novnc Base
+            run: |
+              docker tag debian-novnc:base "${{ secrets.DOCKERHUB_USERNAME }}/debian-novnc:base"
+              docker push "${{ secrets.DOCKERHUB_USERNAME }}/debian-novnc:base"
+              
           - name: Build debian-novnc Xfce4
             run: docker build -t debian-novnc:xfce4 Xfce4/.
 
