@@ -1,0 +1,33 @@
+name: Build and Deploy
+run-name: Build and deploy docker images on dockerhub
+
+on: [push, workflow_dispatch]
+jobs:
+    build_job:
+      runs-on: ubuntu-latest
+
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+
+          - name: Autenticate with Docker Hub
+            uses: docker/login-action@v2
+            with:
+              username: ${{ secrets.DOCKERHUB_USERNAME }}
+              password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+          - name: Build debian-novnc Xfce4
+            run: docker build -t debian-novnc:xfce4 Xfce4/.
+
+          - name: Push debian-novnc Xfce4
+            run: |
+              docker tag debian-novnc:xfce4 "${{ secrets.DOCKERHUB_USERNAME }}/debian-novnc:xfce4"
+              docker push "${{ secrets.DOCKERHUB_USERNAME }}/debian-novnc:xfce4"
+
+          - name: Build debian-novnc Fluxbox
+            run: docker build -t debian-novnc:fluxbox Fluxbox/.
+
+          - name: Push debian-novnc Fluxbox
+            run: |
+              docker tag debian-novnc:fluxbox "${{ secrets.DOCKERHUB_USERNAME }}/debian-novnc:fluxbox"
+              docker push "${{ secrets.DOCKERHUB_USERNAME }}/debian-novnc:fluxbox"
